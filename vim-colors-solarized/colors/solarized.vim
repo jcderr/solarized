@@ -219,6 +219,7 @@ call s:SetOption("termcolors",16)
 call s:SetOption("contrast","normal")
 call s:SetOption("visibility","normal")
 call s:SetOption("diffmode","normal")
+call s:SetOption("errormode", "normal")
 call s:SetOption("hitrail",0)
 call s:SetOption("menu",1)
 
@@ -589,7 +590,11 @@ exe "hi! Underlined"     .s:fmt_none   .s:fg_violet .s:bg_none
 exe "hi! Ignore"         .s:fmt_none   .s:fg_none   .s:bg_none
 "       *Ignore          left blank, hidden  |hl-Ignore|
 
-exe "hi! Error"          .s:fmt_bold   .s:fg_red    .s:bg_none
+if      (g:solarized_errormode=="high")
+    exe "hi! Error"      .s:fmt_bold   .s:fg_none   .s:bg_red
+elseif  (g:solarized_errormode=="normal")
+    exe "hi! Error"      .s:fmt_bold   .s:fg_red    .s:bg_none
+endif
 "       *Error           any erroneous construct
 
 exe "hi! Todo"           .s:fmt_bold   .s:fg_magenta.s:bg_none
@@ -1048,6 +1053,7 @@ function! SolarizedMenu()
         an    &Solarized.&Visibility.-sep-                 <Nop>
         amenu &Solarized.&Visibility.&Help:\ Visibility    :help 'solarized_visibility'<CR>
 
+
         amenu &Solarized.&Background.&Toggle\ Background :ToggleBG<CR>
         amenu &Solarized.&Background.&Dark\ Background   :set background=dark  \| colorscheme solarized<CR>
         amenu &Solarized.&Background.&Light\ Background  :set background=light \| colorscheme solarized<CR>
@@ -1064,6 +1070,9 @@ function! SolarizedMenu()
         amenu &Solarized.&Diff\ Mode.&Low\ Diff\ Mode    :let g:solarized_diffmode="low"     \| colorscheme solarized<CR>
         amenu &Solarized.&Diff\ Mode.&Normal\ Diff\ Mode :let g:solarized_diffmode="normal"  \| colorscheme solarized<CR>
         amenu &Solarized.&Diff\ Mode.&High\ Diff\ Mode   :let g:solarized_diffmode="high"    \| colorscheme solarized<CR>
+
+        amenu &Solarized.&Error\ Mode.&Normal\ Error\ Mode :let g:solarized_errormode="normal"  \| colorscheme solarized<CR>
+        amenu &Solarized.&Error\ Mode.&High\ Error\ Mode   :let g:solarized_errormode="high"    \| colorscheme solarized<CR>
 
         if g:solarized_hitrail==0 | let l:hitrailswitch="On" | else | let l:hitrailswitch="Off" | endif
         exe "amenu &Solarized.&Experimental.&Turn\\ Highlight\\ Trailing\\ Spaces\\ ".l:hitrailswitch." :let g:solarized_hitrail=(abs(g:solarized_hitrail-1)) \\| colorscheme solarized<CR>"
